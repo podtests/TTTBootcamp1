@@ -1,3 +1,5 @@
+package demo.org;
+
 public class JavaDemo {
 
     public static void main(String[] Args) {
