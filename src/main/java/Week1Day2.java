@@ -2,8 +2,8 @@ public class Week1Day2 {
 
     public static void main(String[] args) {
         Week1Day2 d1 = new Week1Day2();
-       // d1.question1();
-        //d1.question2();
+        //d1.question1();
+      //  d1.question2();
        // d1.question3(3,2,"square");
         d1.question3(3,2,"cube");
     }
