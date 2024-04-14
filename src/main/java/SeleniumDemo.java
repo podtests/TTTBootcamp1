@@ -1,3 +1,4 @@
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -11,19 +12,29 @@ public class SeleniumDemo {
 
     public static void main(String[] args) throws MalformedURLException {
 
-        String browserName = "chrome";
+        //WebDriver wd = new ChromeDriver();
+        //ChromeOptions option = new ChromeOptions();
+        //WebDriver wd1 = new RemoteWebDriver(new URL("http://localhost:4444"),option);
+        WebDriver wd = new ChromeDriver();
 
-        WebDriver wd = null;
 
-        if(browserName.equalsIgnoreCase("chrome")) {
+        wd.get("https://demo.evershop.io/account/login");
 
-            wd = new RemoteWebDriver(new URL("http://localhost:4444"), new ChromeOptions());
-        }
-        else if (browserName.equalsIgnoreCase("firefox")) {
-           wd = new FirefoxDriver();
-        }
+        wd.navigate().forward();
 
-        wd.get("https://podtest.in");
+        //locator strategy : xpath
+        //wd.findElement(By.xpath("//input[@name='email']")).sendKeys("akhiljda@gmail.com");
+
+        wd.findElement(By.name("email")).sendKeys("akhiljda@gmail.com");
+
+        wd.findElement(By.tagName("input")).sendKeys("password");
+
+        //wd.findElement()
+
+
+
+
+
 
 
 
