@@ -1,11 +1,10 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,17 +15,41 @@ import java.util.List;
 public class SeleniumDemo {
     ChromeOptions option = new ChromeOptions();
     WebDriver wd = null;
+    //WebDriverWait wait;
 
 
 
-    public static void main(String[] args) throws MalformedURLException, InterruptedException {
+    public static void main(String[] args) throws MalformedURLException {
 
         SeleniumDemo d1 = new SeleniumDemo();
         d1.basicSetup();
-        d1.login();
-        d1.clickItem();
-        d1.openCartPage();
-        d1.readTableContent();
+        d1.loginAction();
+
+
+        //d1.login();
+        //d1.clickItem();
+       // d1.openCartPage();
+       // d1.readTableContent();
+
+
+    }
+
+    public void loginAction() {
+
+        Actions action = new Actions(wd);
+
+
+
+
+        //action.moveToElement( wd.findElement(By.name("email"))).click().sendKeys("AKHIL").perform();
+        //action.sendKeys(wd.findElement(By.name("email")), "AKHIL").perform();
+
+        action.moveToElement(wd.findElement(By.name("email"))).click().keyDown(Keys.SHIFT).sendKeys("a").keyUp(Keys.SHIFT)
+                .sendKeys("k")
+                .keyDown(Keys.SHIFT).sendKeys("h").keyUp(Keys.SHIFT)
+                .sendKeys("il").perform();
+
+        action.contextClick( wd.findElement(By.name("email"))).perform();
 
 
     }
@@ -145,13 +168,34 @@ public class SeleniumDemo {
 
     public void basicSetup() throws MalformedURLException {
         wd = new RemoteWebDriver(new URL("http://localhost:4444"),option);
-        wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
+
+       // wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
 
         wd.get("https://demo.evershop.io/account/login");
 
     }
 
     public void clickItem() {
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        //implicit wait:
+        //wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
+
+        //Explicit wait
+        // WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(2000)) ;
+        //wait.until(ExpectedConditions.elementToBeClickable(By.name("//span[text()='Nike air zoom pegasus 35']")));
+
+
+        //FluentWait
+        Wait fw = new FluentWait(wd).pollingEvery(Duration.ofSeconds(1000))
+                .withTimeout(Duration.ofSeconds(5000));
+        fw.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Nike air zoom pegasus 35']")));
+
         wd.findElement(By.xpath("//span[text()='Nike air zoom pegasus 35']")).click();
     }
 
