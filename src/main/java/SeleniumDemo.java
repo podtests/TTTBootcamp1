@@ -7,6 +7,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.ui.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
@@ -15,16 +18,109 @@ import java.util.*;
 public class SeleniumDemo {
     ChromeOptions option = new ChromeOptions();
      WebDriver wd = null;
+    WebDriver wd1 = null;
+    WebDriver wd2 = null;
+    WebDriver wd3 = null;
+    WebDriver wd4 = null;
+    WebDriver wd5 = null;
+
+    WebDriver wd6 = null;
+    WebDriver wd7 = null;
     WebDriverWait wait = null;
 
-    public static void main(String[] args) throws MalformedURLException, InterruptedException {
+    public static void main(String[] args) throws MalformedURLException, InterruptedException, NoSuchSessionException {
       SeleniumDemo sd = new SeleniumDemo();
       sd.basicSetup();
-      sd.iFrameSection();
+      sd.TC1();
+
+          sd.TC2();
+
+      //sd.workWithShadowDom();
+    }
+
+    public void TC1() {
+        wd.get("https://podtest.in");
+        wd.quit();
+
+        SessionId id = ((RemoteWebDriver) wd).getSessionId();
+
+
+        if (wd == null ) {
+            System.out.println("Wd is null");
+        }else {
+            System.out.println("wd is not null");
+        }
+
+        System.out.println("Session id is: "+id);
+
+    }
+
+    public void TC2() throws NoSuchSessionException  {
+        wd.get("https://www.thetesttribe.com/automation-bootcamp-selenium-java/");  //exception occured : No session
+
+        File file = new File("not_existing_file.txt");
+        try {
+            FileInputStream stream = new FileInputStream(file);
+         } catch (FileNotFoundException e) {
+
+        }
+
+
+        /*
+        try {
+            wd.get("https://www.thetesttribe.com/automation-bootcamp-selenium-java/");  //exception occured : No session
+        } catch(NoSuchSessionException e){
+
+
+
+          //  WebDriver wd = new ChromeDriver();
+            wd.get("https://www.thetesttribe.com/automation-bootcamp-selenium-java/");
+
+            e.printStackTrace();
+
+
+        }
+*/
+        //Thread.sleep(10000);
+        System.out.println("Exception handled");
+        //wd.close();
+    }
+
+    public void workWithShadowDom() throws InterruptedException {
+        wd.get("https://selectorshub.com/iframe-in-shadow-dom/");
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='userName']")));
+        WebElement host = wd.findElement(By.xpath("//div[@id='userName']"));
+        //host.getShadowRoot().findElement(By.xpath("//input[@id='kils']")).sendKeys("Akhil"); //Need to confirm whether we can use xpath in shadowroot or not?
+
+        SearchContext root = host.getShadowRoot();
+                root.findElement(By.cssSelector("input[id='kils']")).sendKeys("Akhil");
 
 
 
     }
+
+    public void workWithIframesInsideShadowDom() throws InterruptedException {
+        wd.get("https://selectorshub.com/iframe-in-shadow-dom/");
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='userName']")));
+        WebElement host = wd.findElement(By.xpath("//div[@id='userName']"));
+        //host.getShadowRoot().findElement(By.xpath("//input[@id='kils']")).sendKeys("Akhil"); //Need to confirm whether we can use xpath in shadowroot or not?
+
+        SearchContext root = host.getShadowRoot();
+        root.findElement(By.cssSelector("input[id='kils']")).sendKeys("Akhil");
+
+        //iframew inside shadow dom
+        WebElement iframe1 =  root.findElement(By.cssSelector("iframe[id='pact1']"));
+        wd.switchTo().frame(iframe1);
+        wd.findElement(By.cssSelector("input[id='glaf']")).sendKeys("Jain");
+
+        //wd.findElement(By.xpath("//input[@id='kils']")).sendKeys("Akhil");
+
+    }
+
+
+
 
 
     public void iFrameSection() {
@@ -98,8 +194,14 @@ public class SeleniumDemo {
         //option.addArguments("--headless");
 
         wd = new RemoteWebDriver(new URL("http://localhost:4444"),option );
-            wait = new WebDriverWait(wd, Duration.ofSeconds(5000));
-        wd.get("https://demo.evershop.io/account/login");
+
+
+
+            wait = new WebDriverWait(wd, Duration.ofSeconds(20000));
+        //wd.get("https://demo.evershop.io/account/login");
+
+       // wd.close();
+       // wd.quit();
 
     }
 
