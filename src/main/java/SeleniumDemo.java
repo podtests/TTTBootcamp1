@@ -4,221 +4,103 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.ui.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class SeleniumDemo {
     ChromeOptions option = new ChromeOptions();
-    WebDriver wd = null;
-    //WebDriverWait wait;
+     WebDriver wd = null;
+    WebDriverWait wait = null;
 
-
-
-    public static void main(String[] args) throws MalformedURLException {
-
-        SeleniumDemo d1 = new SeleniumDemo();
-        d1.basicSetup();
-        d1.loginAction();
-
-
-        //d1.login();
-        //d1.clickItem();
-       // d1.openCartPage();
-       // d1.readTableContent();
-
-
-    }
-
-    public void loginAction() {
-
-        Actions action = new Actions(wd);
-
-
-
-
-        //action.moveToElement( wd.findElement(By.name("email"))).click().sendKeys("AKHIL").perform();
-        //action.sendKeys(wd.findElement(By.name("email")), "AKHIL").perform();
-
-        action.moveToElement(wd.findElement(By.name("email"))).click().keyDown(Keys.SHIFT).sendKeys("a").keyUp(Keys.SHIFT)
-                .sendKeys("k")
-                .keyDown(Keys.SHIFT).sendKeys("h").keyUp(Keys.SHIFT)
-                .sendKeys("il").perform();
-
-        action.contextClick( wd.findElement(By.name("email"))).perform();
-
-
-    }
-
-    public void openCartPage() {
-        wd.navigate().to("https://demo.evershop.io/cart");
-    }
-
-    public int getRowCount() {
-        int rowCount = wd.findElements(By.xpath("//table[contains(@class,'items-table')]/tbody/tr")).size();
-        return rowCount;
-    }
-
-
-    public int colCount() {
-        int colCount = wd.findElements(By.xpath("//table[contains(@class,'items-table')]/thead/tr/td")).size();
-        return colCount;
-    }
-
-    public void readTableContent() {
-
-
-        //default way
-        /*
-        wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr[1]/td[1]//div[@class='cart-tem-info']/a")).getText();
-        wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr[1]/td[2]/div[1]/span")).getText();
-        wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr[1]/td[3]/span")).getText();
-        wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr[1]/td[4]/span")).getText();
-
-        wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr[2]/td[1]//div[@class='cart-tem-info']/a")).getText();
-        wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr[2]/td[2]/div[1]/span")).getText();
-        wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr[2]/td[3]/span")).getText();
-        wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr[2]/td[4]/span")).getText();
-
-*/
-
-
-        System.out.println("-----------------------------------------------------");
-
-
-        //Approach1
-        List<WebElement> ddRows = wd.findElements(By.xpath("//table[contains(@class,'items-table')]/tbody/tr"));
-
-        Iterator<WebElement> ite1 = ddRows.iterator();
-        WebElement e = null;
-        while(ite1.hasNext()) {
-            e = ite1.next();
-            System.out.println(e.findElement(By.xpath("td[1]//div[@class='cart-tem-info']/a")).getText());
-            System.out.println(e.findElement(By.xpath("td[2]/div[1]/span")).getText());
-            System.out.println(e.findElement(By.xpath("td[3]/span")).getText());
-            System.out.println(e.findElement(By.xpath("td[4]/span")).getText());
-        }
-
-        System.out.println("-----------------------------------------------------");
-
-        //Approach2
-        for(WebElement e1 : ddRows) {
-            System.out.println(e1.findElement(By.xpath("td[1]//div[@class='cart-tem-info']/a")).getText());
-            System.out.println(e1.findElement(By.xpath("td[2]/div[1]/span")).getText());
-            System.out.println(e1.findElement(By.xpath("td[3]/span")).getText());
-            System.out.println(e1.findElement(By.xpath("td[4]/span")).getText());
-        }
-
-        System.out.println("-----------------------------------------------------");
-
-        //Approach3
-        for(int i =1; i <= getRowCount(); i++){
-            System.out.println(wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr["+i+"]/td[1]//div[@class='cart-tem-info']/a")).getText());
-            System.out.println(wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr["+i+"]/td[2]/div[1]/span")).getText());
-            System.out.println(wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr["+i+"]/td[3]/span")).getText());
-            System.out.println(wd.findElement(By.xpath("//table[contains(@class,'items-table')]/tbody/tr["+i+"]/td[4]/span")).getText());
-        }
-
-
-
-
-
-
-
-
-
-
+    public static void main(String[] args) throws MalformedURLException, InterruptedException {
+      SeleniumDemo sd = new SeleniumDemo();
+      sd.basicSetup();
+      sd.iFrameSection();
 
 
 
     }
 
-    public void getColnames() {
 
-        //wd.findElement().
+    public void iFrameSection() {
+        wd.get("https://selectorshub.com/iframe-scenario/");
 
-        List<WebElement> colNameElements = wd.findElements(By.xpath("//table[contains(@class,'items-table')]/thead/tr/td"));
-       //Approach1
-        Iterator<WebElement> it1 = colNameElements.iterator();
-        while(it1.hasNext()) {
-            System.out.println(it1.next().findElement(By.xpath("span")).getText());
-        }
+        wd.switchTo().frame("pact1");
 
-        System.out.println("---------------------------------");
 
-        //Approach2
-        for(WebElement e : colNameElements) {
-            System.out.println(e.findElement(By.xpath("span")).getText());
-        }
-        System.out.println("---------------------------------");
+        wd.switchTo().frame("pact2");
+        wd.findElement(By.xpath("//input[@id='jex']")).sendKeys("jain");
 
-        //Approach3:
-        for(int i = 1; i <=colNameElements.size(); i++) {
-            String colName = wd.findElement(By.xpath("//table[contains(@class,'items-table')]/thead/tr/td["+i+"]/span")).getText();
-            System.out.println(colName);
-        }
 
-        //System.out.println(rowCount);
+        //wd.switchTo().parentFrame();
+        wd.findElement(By.xpath("//input[@id='inp_val']")).sendKeys("Akhil");
 
+        //input[@id='inp_val']
     }
 
-    public void basicSetup() throws MalformedURLException {
-        wd = new RemoteWebDriver(new URL("http://localhost:4444"),option);
+    public void fillItemCart() {
 
-       // wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
+        By qty = By.cssSelector("input[name=qty]");
+        wait.until(ExpectedConditions.elementToBeClickable(qty));
+        wd.findElement(qty).clear();
+        wd.findElement(qty).sendKeys("2");
 
-        wd.get("https://demo.evershop.io/account/login");
+        //size
+        By size = By.xpath("(//ul[contains(@class,'variant-option-list')])[1]//li/a[text()='M']");
+        wd.findElement(size).click();
+
+        By sizeparent = By.xpath("(//ul[contains(@class,'variant-option-list')])[1]//li/a[text()='M']//parent::li");
+        wait.until(ExpectedConditions.attributeContains(sizeparent,"class", "selected" ));
+
+        //color
+        By color = By.xpath("(//ul[contains(@class,'variant-option-list')])[2]//li/a[text()='Black']");
+        wd.findElement(color).click();
+
+        By colorParent = By.xpath("(//ul[contains(@class,'variant-option-list')])[2]//li/a[text()='Black']//parent::li");
+        wait.until(ExpectedConditions.attributeContains(colorParent,"class", "selected" ));
+
+        //add to cart
+        wd.findElement(By.xpath("//button/span[text()='ADD TO CART']")).click();
+
+        //click on view cart
+        By viewCartLink = By.xpath("//a[@class='add-cart-popup-button']");
+        wait.until(ExpectedConditions.elementToBeClickable(viewCartLink));
+        wd.findElement(viewCartLink).click();
+
+        System.out.println(wd.getTitle());
+
+
+
+
+
+
+
+
+        //By color = By.xpath("(//ul[contains(@class,'variant-option-list')])[2]//li/a[text()='Black']");
+
+
 
     }
 
     public void clickItem() {
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        //implicit wait:
-        //wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(5000));
-
-        //Explicit wait
-        // WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(2000)) ;
-        //wait.until(ExpectedConditions.elementToBeClickable(By.name("//span[text()='Nike air zoom pegasus 35']")));
-
-
-        //FluentWait
-        Wait fw = new FluentWait(wd).pollingEvery(Duration.ofSeconds(1000))
-                .withTimeout(Duration.ofSeconds(5000));
-        fw.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Nike air zoom pegasus 35']")));
-
-        wd.findElement(By.xpath("//span[text()='Nike air zoom pegasus 35']")).click();
+        By item = By.xpath("//span[text()='Nike air zoom pegasus 35']");
+        wait.until(ExpectedConditions.elementToBeClickable(item));
+        wd.findElement(item).click();
     }
 
-    public void fillItemCart() {
-        wd.findElement(By.xpath("//input[@name='qty']")).clear();
+    public void basicSetup() throws MalformedURLException, InterruptedException {
 
+        //option.addArguments("--headless");
 
-        /*
-        //Link click
-         wd.findElement(By.xpath("//span[text()='Nike air zoom pegasus 35']")).click();
+        wd = new RemoteWebDriver(new URL("http://localhost:4444"),option );
+            wait = new WebDriverWait(wd, Duration.ofSeconds(5000));
+        wd.get("https://demo.evershop.io/account/login");
 
-
-        //Item Page: adding item to cart
-        wd.findElement(By.xpath("//input[@name='qty']")).clear();
-        wd.findElement(By.xpath("//input[@name='qty']")).sendKeys("2");
-
-        wd.findElement(By.xpath("(//ul[contains(@class,'variant-option-list')])[1]//a[text()='M']")).click();
-        wd.findElement(By.xpath("(//ul[contains(@class,'variant-option-list')])[2]//a[text()='Black']")).click();
-
-        Thread.sleep(3000);
-
-        wd.findElement(By.xpath("//span[text()='ADD TO CART']")).click();
-        */
     }
 
     public void login() {
@@ -228,65 +110,76 @@ public class SeleniumDemo {
         wd.findElement(By.xpath("//button[@type='submit']")).click();
     }
 
-    public void basicOperations() {
-        //Fill Text in Input Field
-        wd.findElement(By.name("email")).sendKeys("jhasgdkjhsdkjjadsklfjaskldf");
-        wd.findElement(By.name("email")).clear();
+    public void workingWithToastBox() {
 
-        wd.findElement(By.name("email")).sendKeys("akhiljda@gmail.com");
-        wd.findElement(By.xpath("//input[@name='password']")).sendKeys("Password");
+    }
 
 
+    public void normalAlertBox() throws InterruptedException {
+        wd.get("http://127.0.0.1:5500/htmlcssjspage.html");
 
-        String expectedButtontext ="SIGN IN";
+        wd.findElement(By.cssSelector("input[id=submit]")).click();
 
-        String actualText = wd.findElement(By.xpath("//button[@type='submit']/span")).getText();
+        Thread.sleep(5000);
 
-        if (expectedButtontext.equals(actualText)) {
-            //if (expectedButtontext==actualText) {
-            System.out.println("Passed");
-        }else {
-            System.out.println("Failed");
+        Alert a1 = wd.switchTo().alert();
+        System.out.println(a1.getText());
+        a1.accept();
+
+    }
+
+    public void multipleWindow() throws InterruptedException {
+        //Browser level:
+        wd.manage().window().maximize();
+        SessionId session = ((RemoteWebDriver)wd).getSessionId();
+
+
+        wd.get("https://selectorshub.com/xpath-practice-page/");
+
+        WebDriverWait wait = new WebDriverWait(wd, Duration.ofSeconds(5000));
+        String defaultHandle = wd.getWindowHandle();
+
+        System.out.println("Pre Handles: "+wd.getWindowHandle());  //
+
+
+
+        By linkText = By.xpath("//h2[contains(@class, 'elementor-heading-title')]/a[text()='Find out how to automate these controls without XPath']");
+        wait.until(ExpectedConditions.elementToBeClickable(linkText));
+        wd.findElement(linkText).click();
+
+        System.out.println("Post Handle: "+wd.getWindowHandle());
+
+        //print all windows opened up
+        System.out.println("All handles");
+        Set<String> handles =wd.getWindowHandles();
+
+        Map<Integer, String> tabMap = new HashMap<Integer, String>();
+
+        Thread.sleep(5000);
+
+        System.out.println(wd.getTitle());
+
+        int i =0;
+        for (String s : handles) {
+            tabMap.put(i,s);
+            i++;
         }
 
-        String val = wd.findElement(By.name("email")).getAttribute("placeholder");
-        System.out.println(val);
-
-        //Button: Click
-        wd.findElement(By.xpath("//button[@type='submit']")).click();
-
-    }
-
-    public void navigateCheckout() {
-        wd.navigate().to("https://demo.evershop.io/checkout");
-    }
-
-    public void dropdowns() {
-        WebElement countryDDElement = wd.findElement(By.xpath("//select[contains(@id,'country')]"));
-
-        //Select
-        Select countryDD = new Select(countryDDElement);
-        countryDD.selectByValue("CN");
-        countryDD.selectByIndex(0);
-
-
-        //findelements
-        countryDDElement.click();
-        List<WebElement> ddOptions =   wd.findElements(By.xpath("//select[contains(@id,'country')]/option"));
-        // ddOptions.get(1).click();
-
-        //print all the options rom my dropdown:
-        Iterator<WebElement> ite = ddOptions.iterator();
-
-        WebElement e1 = null;
-        while(ite.hasNext()) {
-            e1 = ite.next();
-            if(e1.getText().toUpperCase().equals("china".toUpperCase())) {
-                e1.click();
-            }
-
+        for(Integer j : tabMap.keySet()) {
+            System.out.println("Key is:"+j+ "TabHandle Id is:"+tabMap.get(j));
         }
+
+        wd.switchTo().window(tabMap.get(1));
+
+        /*
+        By caseStudiesSubTab = By.xpath("//a[text()='Case Studies']");
+        wait.until(ExpectedConditions.elementToBeClickable(caseStudiesSubTab));
+        wd.findElement(caseStudiesSubTab).click();
+*/
+
+
     }
+
 
 
 }
