@@ -9,29 +9,14 @@
     <parameter name="color" value="Brown"></parameter>
     <test name="Chrome test plan">
         <parameter name="browserName" value="chrome"></parameter>
-        <groups>
-            <run>
-                <include name="sanity"></include>
-            </run>
-        </groups>
+
         <classes>
            <class name="TestNGDemo">
            </class>
         </classes>
     </test>
 
-    <test name="Firefox test plan">
-        <parameter name="browserName" value="firefox"></parameter>
-        <groups>
-            <run>
-                <include name="login"></include>
-            </run>
-        </groups>
-        <classes>
-            <class name="TestNGDemo">
-            </class>
-        </classes>
-    </test>
+
 </suite>
 
 

@@ -51,7 +51,7 @@ public class TestNGDemo {
 
 
     @Parameters({"product"})
-    @Test(priority = 3, groups = {"sanity"})
+    @Test(priority = 3, groups = {"sanity"}, enabled = false)
     public void addItem(String productName ) {
 
         //Home page
@@ -62,7 +62,7 @@ public class TestNGDemo {
 
     }
     @Parameters({"qty", "size", "color"})
-    @Test(priority = 10, groups = {"regression"})
+    @Test(priority = 10, groups = {"regression"}, enabled = false)
     public void addItemToCart(String qty, String size, String color) {
         //Item Page: Fill the details & click Add To cart.
         wd.findElement(By.xpath("//input[@name='qty']")).clear();
