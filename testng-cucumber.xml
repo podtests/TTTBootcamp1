@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="cucumber testcases">
+    <test name="Learning Cucumber">
+        <classes>
+            <class name="Runner"></class>
+        </classes>
+    </test>
+</suite>
+
+

@@ -1,9 +1,12 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="cucumber testcases">
-    <test name="Learning Cucumber">
+<suite name="e2e">
+    <test name="Functional testing">
+        <parameter name="username" value="akhiljda@gmail.com"></parameter>
+        <parameter name="password" value="Password"></parameter>
+        <parameter name="itemName" value="Mix and match chuck taylor all star"></parameter>
         <classes>
-            <class name="Runner"></class>
+            <class name="testngTestCases.Jira100"></class>
         </classes>
     </test>
 </suite>
