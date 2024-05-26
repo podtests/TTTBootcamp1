@@ -33,6 +33,17 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>7.18.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-testng</artifactId>
+      <version>7.18.0</version>
+    </dependency>
 
   </dependencies>
   <build>
