@@ -4,11 +4,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pom.HomePOM;
 import pom.ItemPOM;
 import pom.LoginPOM;
+import utils.ConfigReader;
+import utils.ExcelManager;
+
+import java.io.ObjectInputFilter;
 
 public class Jira100 {
 
@@ -17,8 +23,21 @@ public class Jira100 {
     HomePOM homePOM;
     ItemPOM itemPOM;
 
-    @Parameters({"username", "password","itemName"})
-    @Test
+
+
+    @BeforeSuite
+    public void preSuite() {
+        ConfigReader.loadFile();
+    }
+
+
+    @DataProvider(name="credentials")
+    public Object[][] readDataSource() {
+        ExcelManager em = new ExcelManager();
+        return em.readFile();
+    }
+
+    @Test(dataProvider = "credentials")
     public void addItemToCartTest(String UN, String PW, String itemName) {
         WebDriver wd = new ChromeDriver();
         loginPOM = new LoginPOM(wd);
@@ -26,10 +45,6 @@ public class Jira100 {
         loginPOM.get().fillUserName(UN).fillPassword(PW).clickSignIn()
                 .isPageLoaded().clickItem(itemName)
                 .isPageLoaded().fillQty("2").selectSize("L").selectColor("Grey").clickAddItemToCart();
-
-
-
-
 
         //Login screen
         /*
@@ -43,7 +58,7 @@ public class Jira100 {
 
 
 
-    @Parameters({"username", "password"})
+
     @Test(enabled = false)
     public void loginSuccess(String UN, String PW) {
         WebDriver wd = new ChromeDriver();

@@ -2,6 +2,7 @@ package pom;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import utils.ConfigReader;
 
 public class LoginPOM {
 
@@ -12,12 +13,14 @@ public class LoginPOM {
 
     WebDriver wd  = null;
 
+
+
     public LoginPOM(WebDriver wd1) {
        wd = wd1;
     }
 
     public LoginPOM get() {
-        wd.get("https://demo.evershop.io/account/login");
+        wd.get(ConfigReader.getProperty("url"));
         return this;
     }
 
