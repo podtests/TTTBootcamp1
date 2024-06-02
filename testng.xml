@@ -3,7 +3,13 @@
 <suite name="e2e">
     <test name="Functional testing">
         <classes>
-            <class name="testngTestCases.Jira100"></class>
+
+            <class name="testngTestCases.Jira100">
+
+            </class>
+
+
+
         </classes>
     </test>
 </suite>

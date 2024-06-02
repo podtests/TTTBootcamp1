@@ -1,6 +1,11 @@
 package testngTestCases;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
@@ -14,7 +19,10 @@ import pom.LoginPOM;
 import utils.ConfigReader;
 import utils.ExcelManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.ObjectInputFilter;
+import java.time.LocalTime;
 
 public class Jira100 {
 
@@ -24,28 +32,45 @@ public class Jira100 {
     ItemPOM itemPOM;
 
 
+    public static Logger logger = LogManager.getLogger(Jira100.class.getName());
+
 
     @BeforeSuite
     public void preSuite() {
+        logger.info("preSuite method started");
         ConfigReader.loadFile();
+        logger.info("preSuite method completed");
     }
 
 
     @DataProvider(name="credentials")
     public Object[][] readDataSource() {
+        logger.info("readDataSource method started");
         ExcelManager em = new ExcelManager();
-        return em.readFile();
+        String[][] str = em.readFile();
+        logger.info("readDataSource method completed");
+        return str;
     }
 
     @Test(dataProvider = "credentials")
     public void addItemToCartTest(String UN, String PW, String itemName) {
+        logger.info("TC: addItemToCartTest started");
         WebDriver wd = new ChromeDriver();
+
         loginPOM = new LoginPOM(wd);
 
         loginPOM.get().fillUserName(UN).fillPassword(PW).clickSignIn()
                 .isPageLoaded().clickItem(itemName)
                 .isPageLoaded().fillQty("2").selectSize("L").selectColor("Grey").clickAddItemToCart();
 
+        File file = ((TakesScreenshot)wd).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(file, new File("src/test/resources/screenshots/addItemToCartTest"+ LocalTime.now().getSecond() + ".png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        logger.info("TC: addItemToCartTest Completed");
         //Login screen
         /*
         loginPOM.get().fillUserName(UN).fillPassword(PW).clickSignIn();

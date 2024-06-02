@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config" name="e2e" status="ERROR">
+    <Appenders>
+        <Console name="OnScreen"  target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <File name="tcFile" fileName="src/test/resources/logs/tc.log" append="true" >
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="tcFile"></AppenderRef>
+            <AppenderRef ref="OnScreen"></AppenderRef>
+        </Root>
+    </Loggers>
+
+
+</Configuration>
