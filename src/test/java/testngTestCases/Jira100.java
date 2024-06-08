@@ -9,14 +9,12 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pom.HomePOM;
 import pom.ItemPOM;
 import pom.LoginPOM;
 import utils.ConfigReader;
+import utils.DriverManage;
 import utils.ExcelManager;
 
 import java.io.File;
@@ -24,7 +22,7 @@ import java.io.IOException;
 import java.io.ObjectInputFilter;
 import java.time.LocalTime;
 
-public class Jira100 {
+public class Jira100 extends BaseTest{
 
     LoginPOM loginPOM ;
 
@@ -38,6 +36,7 @@ public class Jira100 {
     @BeforeSuite
     public void preSuite() {
         logger.info("preSuite method started");
+        logger.info("CurrentThreadName is: "+Thread.currentThread().getName());
         ConfigReader.loadFile();
         logger.info("preSuite method completed");
     }
@@ -46,17 +45,20 @@ public class Jira100 {
     @DataProvider(name="credentials")
     public Object[][] readDataSource() {
         logger.info("readDataSource method started");
+        logger.info("CurrentThreadName is: "+Thread.currentThread().getName());
         ExcelManager em = new ExcelManager();
         String[][] str = em.readFile();
         logger.info("readDataSource method completed");
         return str;
     }
 
-    @Test(dataProvider = "credentials")
-    public void addItemToCartTest(String UN, String PW, String itemName) {
-        logger.info("TC: addItemToCartTest started");
-        WebDriver wd = new ChromeDriver();
 
+
+    @Test(dataProvider = "credentials")
+    public void addItemToCartTest(String browserName, String UN, String PW, String itemName) {
+        logger.info("TC: addItemToCartTest started");
+        logger.info("CurrentThreadName is: "+Thread.currentThread().getName());
+        WebDriver wd = DriverManage.getSession();
         loginPOM = new LoginPOM(wd);
 
         loginPOM.get().fillUserName(UN).fillPassword(PW).clickSignIn()
@@ -65,12 +67,48 @@ public class Jira100 {
 
         File file = ((TakesScreenshot)wd).getScreenshotAs(OutputType.FILE);
         try {
-            FileUtils.copyFile(file, new File("src/test/resources/screenshots/addItemToCartTest"+ LocalTime.now().getSecond() + ".png"));
+            FileUtils.copyFile(file, new File("src/test/resources/screenshots/addItemToCartTest"+ LocalTime.now().getMinute()+LocalTime.now().getSecond() + ".png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         logger.info("TC: addItemToCartTest Completed");
+
+
+        //Login screen
+        /*
+        loginPOM.get().fillUserName(UN).fillPassword(PW).clickSignIn();
+        homePOM.isPageLoaded().clickItem(itemName);
+        */
+
+        //Home screen
+
+    }
+
+
+    @Test(dataProvider = "credentials")
+    public void checkShoppingButtons(String browserName, String UN, String PW, String itemName) {
+        logger.info("TC: addItemToCartTest started");
+        logger.info("CurrentThreadName is: "+Thread.currentThread().getName());
+        WebDriver wd = DriverManage.getSession();
+
+        loginPOM = new LoginPOM(wd);
+
+        boolean buttonCountMatch = loginPOM.get().fillUserName(UN).fillPassword(PW).clickSignIn()
+                .isPageLoaded().checkShopppingButtonsCount(3);
+
+
+        File file = ((TakesScreenshot)wd).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(file, new File("src/test/resources/screenshots/addItemToCartTest"+ LocalTime.now().getMinute()+LocalTime.now().getSecond() + ".png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assert.assertTrue(buttonCountMatch);
+
+        logger.info("TC: addItemToCartTest Completed");
+
         //Login screen
         /*
         loginPOM.get().fillUserName(UN).fillPassword(PW).clickSignIn();

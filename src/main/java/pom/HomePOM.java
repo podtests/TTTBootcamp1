@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -21,7 +22,7 @@ public class HomePOM {
     WebDriverWait wait;
 
     public HomePOM(WebDriver wd) {
-        logger.info("HomePOM Constructor Started with session id as:"+((ChromeDriver)wd).getSessionId().toString());
+        logger.info("HomePOM Constructor Started with session id as:"+((RemoteWebDriver)wd).getSessionId().toString());
         this.wd = wd;
         wait = new WebDriverWait(this.wd, Duration.ofSeconds(5000));
         logger.info("HomePOM Constructor Completed");
@@ -32,6 +33,21 @@ public class HomePOM {
         wait.until(ExpectedConditions.visibilityOfElementLocated(shopWomenButton));
         logger.info("isPageLoaded method completed");
         return this;
+    }
+
+    public boolean checkShopppingButtonsCount(int noOfExpectedShopppingButtons) {
+        logger.info("checkShopppingButtonsVisibility method started");
+        int shopButtoncount = wd.findElements(By.cssSelector("a.button")).size();
+        boolean isWorking = false;
+        if (shopButtoncount == noOfExpectedShopppingButtons){
+            isWorking = true;
+        }else {
+            isWorking = false;
+        }
+
+        logger.info("checkShopppingButtonsVisibility method completed");
+        return isWorking;
+
     }
 
 

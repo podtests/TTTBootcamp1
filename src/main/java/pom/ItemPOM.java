@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -26,7 +27,7 @@ public class ItemPOM {
     By addToCartButton = By.xpath("//button/span[text()='ADD TO CART']");
 
     public ItemPOM(WebDriver wd) {
-        logger.info("ItemPOM Constructor Started with session id as:"+((ChromeDriver)wd).getSessionId().toString());
+        logger.info("ItemPOM Constructor Started with session id as:"+((RemoteWebDriver)wd).getSessionId().toString());
         this.wd = wd;
         wait = new WebDriverWait(this.wd, Duration.ofSeconds(5000));
         logger.info("ItemPOM Constructor Completed");
