@@ -1,24 +1,19 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="e2e" parallel="tests" thread-count="2">
+<suite name="e2e" parallel="methods" thread-count="2">
+    <listeners>
+        <listener class-name="CustomListener"></listener>
+    </listeners>
 
-    <test name="Firefox testing">
-        <parameter name="browser" value="Firefox"></parameter>
-        <classes>
-            <class name="testngTestCases.Jira100">
+    <test name="chrome testing" >
+        <parameter name="browser" value="chrome"></parameter>
+        <classes >
+            <class name="testngTestCases.Jira100" >
             </class>
 
         </classes>
     </test>
 
-    <test name="Chrome testing">
-        <parameter name="browser" value="Chrome"></parameter>
-        <classes>
-            <class name="testngTestCases.Jira100">
-            </class>
-
-        </classes>
-    </test>
 </suite>
 
 

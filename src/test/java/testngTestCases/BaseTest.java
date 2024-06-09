@@ -11,7 +11,7 @@ public class BaseTest {
     public static Logger logger = LogManager.getLogger(Jira100.class.getName());
 
     @Parameters({"browser"})
-    @BeforeMethod()
+    @BeforeMethod
     public void preMethod(String browserName) {
         logger.info("TC: preMethod started");
         logger.info("preMethod: CurrentThreadName is: "+Thread.currentThread().getName());

@@ -7,6 +7,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import utils.ConfigReader;
+import utils.ScreenshotManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,12 +63,7 @@ public class LoginPOM {
         logger.info("clickSignIn method started");
 
         WebElement we = wd.findElement(signInButton);
-        File file = we.getScreenshotAs(OutputType.FILE);
-        try {
-            FileUtils.copyFile(file, new File("src/test/resources/screenshots/clickSignIn"+ LocalTime.now().getSecond() + ".png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        ScreenshotManager.takeElementScreenshot(we,Thread.currentThread().getName()+"clickSignIn" );
 
         we.click();
         logger.info("clickSignIn method Completed");
