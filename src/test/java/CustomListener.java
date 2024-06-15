@@ -1,8 +1,6 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
-import org.testng.Reporter;
+import org.testng.*;
 import testngTestCases.Jira100;
 import utils.DriverManage;
 import utils.ScreenshotManager;

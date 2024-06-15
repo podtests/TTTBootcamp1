@@ -7,6 +7,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import utils.ConfigReader;
+import utils.DriverManage;
 import utils.ScreenshotManager;
 
 import java.io.File;
@@ -63,7 +64,12 @@ public class LoginPOM {
         logger.info("clickSignIn method started");
 
         WebElement we = wd.findElement(signInButton);
-        ScreenshotManager.takeElementScreenshot(we,Thread.currentThread().getName()+"clickSignIn" );
+
+        String dirName = "src\\test\\resources\\screenshots\\";
+
+        String fileName = dirName+Thread.currentThread().getId()+"clickSignIn"+LocalTime.now().getMinute()+LocalTime.now().getSecond()+".png";
+
+        ScreenshotManager.takeElementScreenshot(we,fileName );
 
         we.click();
         logger.info("clickSignIn method Completed");

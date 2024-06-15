@@ -25,7 +25,7 @@ public class ScreenshotManager {
 
         File file = ((TakesScreenshot)we).getScreenshotAs(OutputType.FILE);
         try {
-            FileUtils.copyFile(file, new File("src/test/resources/screenshots/"+name+ LocalTime.now().getMinute()+LocalTime.now().getSecond() + ".png"));
+            FileUtils.copyFile(file, new File(name));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

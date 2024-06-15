@@ -43,6 +43,7 @@ public class Jira100 extends BaseTest {
     }
 
 
+    @BeforeSuite
     @DataProvider(name="credentials", parallel = true)
     public Object[][] readDataSource() {
         logger.info("readDataSource method started");
@@ -74,6 +75,8 @@ public class Jira100 extends BaseTest {
 
     @Test(testName = "addItemToCartTest",  dataProvider = "credentials")
     public void addItemToCartTest(String browserName, String UN, String PW, String itemName) {
+        long id = Thread.currentThread().getId();
+        Thread.currentThread().setName("addItemToCartTest Thread: "+id);
         logger.info("TC: addItemToCartTest started");
         logger.info("CurrentThreadName is: "+Thread.currentThread().getName());
         WebDriver wd = DriverManage.getSession();
@@ -101,6 +104,8 @@ public class Jira100 extends BaseTest {
 
     @Test(testName = "checkShoppingButtons", dataProvider = "credentials")
     public void checkShoppingButtons(String browserName, String UN, String PW, String itemName) {
+        long id = Thread.currentThread().getId();
+        Thread.currentThread().setName("checkShoppingButtons Thread: "+id);
         logger.info("TC: checkShoppingButtons started");
         logger.info("checkShoppingButtons CurrentThreadName is: "+Thread.currentThread().getName());
         WebDriver wd = DriverManage.getSession();
