@@ -1,3 +1,4 @@
+import io.qameta.allure.Allure;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.*;
@@ -5,7 +6,10 @@ import testngTestCases.Jira100;
 import utils.DriverManage;
 import utils.ScreenshotManager;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalTime;
+import java.io.File;
+import java.util.Arrays;
 
 public class CustomListener implements ITestListener {
 
@@ -23,9 +27,11 @@ public class CustomListener implements ITestListener {
         String dirName = "src\\test\\resources\\screenshots\\";
         String logDirName = "src\\test\\resources\\logs\\tc.log";
         String fileName = dirName+result.getName()+LocalTime.now().getMinute()+LocalTime.now().getSecond()+".png";
-        ScreenshotManager.takePageScreenshot(DriverManage.getSession(),fileName);
-
+        byte[] screenshot = ScreenshotManager.takePageScreenshot(DriverManage.getSession(),fileName);
+        //Allure.addAttachment("Screenshot on failure", "image/png", Arrays.toString(screenshot));
+        Allure.attachment("Screenshot on Fail", new ByteArrayInputStream(screenshot));
         Reporter.log("<a href='..\\..\\"+fileName+"'>Screenshot</a> ");
+
         //Reporter.log("<a href='..\\..\\"+logDirName+"'>logFile</a> ");
     }
 
@@ -34,8 +40,10 @@ public class CustomListener implements ITestListener {
     public void onTestSuccess(ITestResult result) {
         String dirName = "src\\test\\resources\\screenshots\\";
         String fileName = dirName+result.getName()+LocalTime.now().getMinute()+LocalTime.now().getSecond()+".png";
-        ScreenshotManager.takePageScreenshot(DriverManage.getSession(),fileName);
-
+       // ScreenshotManager.takePageScreenshot(DriverManage.getSession(),fileName);
+        byte[] screenshot = ScreenshotManager.takePageScreenshot(DriverManage.getSession(),fileName);
+        //Allure.addAttachment("Screenshot on Pass", "image/png", );
+        Allure.attachment("Screenshot on Pass", new ByteArrayInputStream(screenshot));
         Reporter.log("<a href='..\\..\\"+fileName+"'>Screenshot</a> ");
     }
 

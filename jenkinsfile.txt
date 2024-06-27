@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("build") {
+		    steps {
+            	echo "Building .war file from the dev project"
+		    }
+        }
+
+        stage("qa-Deploy") {
+		    steps {
+	            echo "Deployed the generated .war file on QA Environment"
+		    }
+        }
+
+
+        stage("clone"){
+		    steps {
+
+                //clone the Git project
+                git branch: 'seleniumgridjenkins', changelog: false, poll: false, url: 'https://github.com/podtests/TTTBootcamp1.git'
+		    }
+        }
+         stage("setup") {
+            steps {
+                //run selenium grid
+                bat "start java -jar selenium-server-4.14.0.jar standalone"
+            }
+        }
+        stage("run-test"){
+            steps{
+                bat "mvn clean test"
+            }
+            //attach our testng reports to our build
+            post {
+                always {
+                    testNG()
+                }
+            }
+
+        }
+
+    }
+
+}

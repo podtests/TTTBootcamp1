@@ -1,5 +1,6 @@
 package testngTestCases;
 
+import io.qameta.allure.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputFilter;
 import java.time.LocalTime;
+
+import static io.qameta.allure.SeverityLevel.CRITICAL;
 
 public class Jira100 extends BaseTest {
 
@@ -74,6 +77,12 @@ public class Jira100 extends BaseTest {
      */
 
     @Test(testName = "addItemToCartTest",  dataProvider = "credentials")
+    @Description("This test attempts to log into the website using a login and a password. Fails if any error happens.\n\nNote that this test does not test 2-Factor Authentication.")
+    @Severity(CRITICAL)
+    @Owner("John Doe")
+    @Link(name = "Website", url = "https://dev.example.com/")
+    @Issue("AUTH-123")
+    @TmsLink("TMS-456")
     public void addItemToCartTest(String browserName, String UN, String PW, String itemName) {
         long id = Thread.currentThread().getId();
         Thread.currentThread().setName("addItemToCartTest Thread: "+id);
@@ -103,6 +112,12 @@ public class Jira100 extends BaseTest {
 
 
     @Test(testName = "checkShoppingButtons", dataProvider = "credentials")
+    @Description("This Dummy testcase")
+    @Severity(CRITICAL)
+    @Owner("Akhil Jain")
+    @Link(name = "Podtest", url = "https://dev.example.com/")
+    @Issue("AUTH-456")
+    @TmsLink("TMS-123")
     public void checkShoppingButtons(String browserName, String UN, String PW, String itemName) {
         long id = Thread.currentThread().getId();
         Thread.currentThread().setName("checkShoppingButtons Thread: "+id);
